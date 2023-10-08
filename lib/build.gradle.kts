@@ -32,3 +32,9 @@ java {
         languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
+
+tasks.withType<Test> {
+    this.testLogging {
+        this.showStandardStreams = true
+    }
+}
