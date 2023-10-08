@@ -5,14 +5,27 @@
  * For more details on building Java & JVM projects, please refer to https://docs.gradle.org/8.3/userguide/building_java_projects.html in the Gradle documentation.
  */
 
+
 plugins {
     // Apply the java-library plugin for API and implementation separation.
-    `java-library`
+    id 'java-library'
+    id "maven-publish" 
 }
+
+group = 'com.github.ogios'
 
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
+    maven { url "https://jitpack.io" }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+	      	from components.java
+        }
+    }
 }
 
 dependencies {
@@ -28,13 +41,13 @@ dependencies {
 
 // Apply a specific Java toolchain to ease working on different environments.
 java {
+    withSourcesJar()
+	  withJavadocJar()
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
 
-tasks.withType<Test> {
-    this.testLogging {
-        this.showStandardStreams = true
-    }
+test {
+  testLogging.showStandardStreams = true
 }
